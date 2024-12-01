@@ -1,0 +1,26 @@
+id: vulnera-x-workflow
+namespace: vulnera.x
+description: Workflow for Vulnera-X project using core tasks.
+
+tasks:
+  - id: clone-repo
+    type: io.kestra.core.tasks.scripts.Bash
+    commands:
+      - git clone https://github.com/AbhishekTondarkar/Vulnera-X.git /data/vulnera-x
+      - cd /data/vulnera-x
+
+  - id: install-dependencies
+    type: io.kestra.core.tasks.scripts.Bash
+    commands:
+      - cd /data/vulnera-x
+      - pip install -r requirements.txt
+
+  - id: run-flask-app
+    type: io.kestra.core.tasks.scripts.Bash
+    commands:
+      - cd /data/vulnera-x
+      - python app.py
+triggers:
+  - id: daily-schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 0 * * *"  # Runs daily at midnight
